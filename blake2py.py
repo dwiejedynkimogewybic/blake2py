@@ -1,10 +1,7 @@
 import struct
 # CONSTANT DEFINITIONS
 
-R1 = 32
-R2 = 24
-R3 = 16
-R4 = 63
+
 
 # Initialization Vector (IV)
 IV_BLAKE2B = (
@@ -17,6 +14,8 @@ IV_BLAKE2B = (
     0x1f83d9abfb41bd6b,
     0x5be0cd19137e2179
 )
+
+
 
 # Permutation array
 SIGMA = (
@@ -32,11 +31,34 @@ SIGMA = (
     (10,  2,  8,  4,  7,  6,  1,  5, 15, 11,  9, 14,  3, 12, 13,  0)
 )
 
+
+
 # HELPER FUNCTIONS
 
 def rot(x, y):
     return ((x >> y) | (x << (64 - y))) & 0xFFFFFFFFFFFFFFFF
 
+# CONFIG CLASS
+class Mode:
+	def __init__(self, mode):
+		if mode=='b':
+			self.r = 12
+			self.w = 64
+			selr.bb = 128
+			self.R1 = 32
+			self.R2 = 24
+			self.R3 = 16
+			self.R4 = 63
+		elif mode == 's':
+			self.r = 10
+			self.w = 32
+			self.bb = 64
+			self.R1 = 16
+			self.R2 = 12
+			self.R3 = 8
+			self.R4 = 7
+		
+			
 # FUNCTION DEFINITIONS
 
 def mix(v, a, b, c, d, x, y):
