@@ -143,11 +143,14 @@ def blake2(data, m='b', k=b'', l=None):
             l = 32
     else:
         raise ValueError("Invalid mode")
-    
+    max_l = cfg.bb // 2
+    if not (1 <= l <= max_l):
+        raise ValueError(f"Output length must be between 1 and {max_l}")
+
     buf = bytearray()
     kk = len(k)
     bb = cfg.bb
-    max_key = bb
+    max_key = max_l
     if kk > max_key:
         raise ValueError(f"Key too long: max {max_key} bytes for this variant")
     if kk>0:
@@ -194,15 +197,5 @@ def blake2(data, m='b', k=b'', l=None):
     for word in h:
         final_bytes.extend(struct.pack('<'+word_char, word))
 
-    # Check if the output has a valid length
-    max_l = 64 if cfg.w == 64 else 32
-    if not (1 <= l <= max_l):
-        raise ValueError(f"Output length must be between 1 and {max_l}")
-
     # Returning l bytes
     return HashFormatter(final_bytes[:l])
-
-
-
-
-
